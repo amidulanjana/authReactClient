@@ -1,6 +1,6 @@
 import axios from "axios";
 import { browserHistory } from "react-router";
-import { AUTH_USER, AUTH_ERROR, UNAUTH_USER } from "./types";
+import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_MESSAGE } from "./types";
 
 const ROOT_URL = "http://localhost:3080";
 
@@ -33,6 +33,21 @@ export function signupUser({ email, password }) {
         browserHistory.push("/feature");
       })
       .catch(response => dispatch(authError(response.response.data.error)));
+  };
+}
+
+export function fetchMessage() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}`, {
+        headers: { authorization: localStorage.getItem("token") }
+      })
+      .then(message => {
+        dispatch({
+          type: FETCH_MESSAGE,
+          payload: message.data
+        });
+      });
   };
 }
 

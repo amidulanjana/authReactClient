@@ -1,9 +1,24 @@
 import React, { Component } from "react";
+import * as actions from "../actions";
+import { connect } from "react-redux";
 
 class Feature extends Component {
+  componentWillMount() {
+    this.props.fetchMessage();
+  }
+
   render() {
-    return <div>This is a feature</div>;
+    return (
+      <div>
+        This is a feature
+        <p>{this.props.message}</p>
+      </div>
+    );
   }
 }
-
-export default Feature;
+function mapStateToProps(state) {
+  return {
+    message: state.auth.message
+  };
+}
+export default connect(mapStateToProps, actions)(Feature);
